@@ -1,0 +1,2 @@
+loader: GameScore\Api\EndpointLoader
+router: GameScore\Api\EndpointRouter

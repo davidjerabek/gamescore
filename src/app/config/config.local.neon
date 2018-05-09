@@ -1,0 +1,6 @@
+parameters:
+	connection:
+		host: mysql
+		user: gamescore_user
+		password: masterkey
+		database: gamescore

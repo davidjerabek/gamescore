@@ -1,0 +1,22 @@
+extensions:
+	api: GameScore\Api\DI\ApiExtension
+
+api:
+	endpoints:
+		scoreboard:
+			class: GameScore\Api\ScoreboardEndpoint
+			methods:
+				- GameScore\Api\Scoreboard\SaveScoreMethod
+				- GameScore\Api\Scoreboard\TopRatedMethod
+
+database:
+	dsn: "mysql:host=%connection.host%;dbname=%connection.database%"
+	user: %connection.user%
+	password: %connection.password%
+	options:
+		lazy: yes
+
+services:
+	- GameScore\Model\ScoreboardModel
+	- GameScore\Model\UserModel
+	- GameScore\Model\GameModel

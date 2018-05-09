@@ -1,0 +1,51 @@
+version: "2"
+services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: gamescore
+      MYSQL_USER: gamescore_user
+      MYSQL_PASSWORD: masterkey
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./install:/docker-entrypoint-initdb.d
+    ports:
+      - 3306
+    tty: true
+    stdin_open: true
+  php:
+    image: docker.theczech.io/php7.1-dave
+    restart: always
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 9000
+    depends_on:
+      - mysql
+  composer:
+      image: composer/composer:php7
+      restart: "no"
+      command: install
+      volumes:
+        - ./src:/app
+      depends_on:
+        - php
+  nginx:
+    image: docker.theczech.io/nginx
+    restart: always
+    environment:
+      - WWW_ROOT=/var/www/html/www
+      - PHP_FPM=true
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 9080:80
+    depends_on:
+      - php
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+volumes:
+  mysql:
